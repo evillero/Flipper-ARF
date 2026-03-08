@@ -110,7 +110,11 @@ def _proto_ver_generator(target, source, env):
     if not git_describe:
         raise StopError("Failed to process git tags for protobuf versioning")
 
-    git_major, git_minor = git_describe.split(".")
+    parts = git_describe.split(".")
+    if len(parts) >= 2:
+        git_major, git_minor = parts[0], parts[1]
+    else:
+        git_major, git_minor = parts[0], "0"
     version_file_data = (
         "#pragma once",
         f"#define PROTOBUF_MAJOR_VERSION {git_major}",
