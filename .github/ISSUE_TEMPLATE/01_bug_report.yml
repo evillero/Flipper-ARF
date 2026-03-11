@@ -1,45 +1,77 @@
-name: Bug report
-description: File a bug reports regarding the firmware.
+name: Bug Report
+description: Report a bug in Flipper-ARF firmware.
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for taking the time to fill out an issue, this template is meant for any issues related to the Flipper Zero unleashed firmware.
+        Thanks for reporting a bug in Flipper-ARF. Please fill in as much detail as possible.
+  - type: input
+    id: firmware-version
+    attributes:
+      label: Firmware version
+      description: "ARF version or git commit hash."
+      placeholder: "e.g. ARF 0.1.2 or commit abc1234"
+    validations:
+      required: true
+  - type: dropdown
+    id: hardware
+    attributes:
+      label: Hardware setup
+      description: "Which hardware configuration are you using?"
+      options:
+        - Flipper Zero (stock)
+        - Flipper Zero (modded antenna)
+        - Flipper Zero + external CC1101
+        - Other (describe below)
+    validations:
+      required: true
+  - type: input
+    id: protocol
+    attributes:
+      label: Protocol affected
+      description: "Which protocol is affected, if applicable?"
+      placeholder: "e.g. Kia V3/V4, PSA GROUP, Keeloq, Fiat Mystery"
+  - type: input
+    id: frequency
+    attributes:
+      label: Frequency & modulation
+      description: "RF frequency and modulation used, if relevant."
+      placeholder: "e.g. 433.92 MHz AM"
   - type: textarea
     id: description
     attributes:
-      label: Describe the bug.
-      description: "A clear and concise description of what the bug is."
+      label: Bug description
+      description: "A clear and concise description of the bug."
     validations:
       required: true
   - type: textarea
     id: repro
     attributes:
-      label: Reproduction
+      label: Steps to reproduce
       description: "How can this bug be reproduced?"
       placeholder: |
-        1. Switch on...
-        2. Press button '....'
-        3. Wait for the moon phase
-        4. It burns
+        1. Open SubGhz app
+        2. Load saved .sub file
+        3. Press Send
+        4. Observe error / unexpected behavior
     validations:
       required: true
-  - type: input
-    id: target
+  - type: textarea
+    id: expected
     attributes:
-      label: Target
-      description: Specify the target
-      # Target seems to be largely ignored by outside sources.
+      label: Expected vs actual behavior
+      description: "What did you expect to happen, and what actually happened?"
+    validations:
+      required: true
   - type: textarea
     id: logs
     attributes:
-      label: Logs
-      description: Attach your debug logs here
+      label: Logs / screenshots
+      description: "Attach debug logs (via serial CLI) or screenshots if available."
       render: Text
-      # Avoid rendering as Markdown here.
   - type: textarea
     id: anything-else
     attributes:
-      label: Anything else?
-      description: Let us know if you have anything else to share.
+      label: Additional context
+      description: "Any other information that might help (vehicle model, .sub file contents, etc.)."

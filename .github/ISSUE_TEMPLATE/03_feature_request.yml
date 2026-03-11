@@ -1,23 +1,46 @@
 name: Feature Request
-description: For feature requests regarding the firmware.
+description: Suggest a new feature or improvement for Flipper-ARF.
 labels: ["feature request"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for taking the time to fill out an issue, this template is meant for any feature suggestions.
-  - type: textarea
-    id: proposal
+        Thanks for suggesting a feature for Flipper-ARF. Please describe your idea in detail.
+  - type: dropdown
+    id: category
     attributes:
-      label: "Description of the feature you're suggesting."
-      description: |
-        Please describe your feature request in as many details as possible.
-          - Describe what it should do.
-          - Note whetever it is to extend existing functionality or introduce new functionality.
+      label: Category
+      description: "What area does this feature fall under?"
+      options:
+        - New protocol
+        - Protocol improvement
+        - UI / UX
+        - Build system / tooling
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: manufacturer
+    attributes:
+      label: Manufacturer / protocol
+      description: "Which manufacturer or protocol is this related to, if applicable?"
+      placeholder: "e.g. Toyota, Renault, Keeloq"
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: "Describe the feature you're suggesting."
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: "Why is this needed? What problem does it solve?"
     validations:
       required: true
   - type: textarea
     id: anything-else
     attributes:
-      label: Anything else?
-      description: Let us know if you have anything else to share.
+      label: Additional context
+      description: "Any references, datasheets, links, or examples that support this request."

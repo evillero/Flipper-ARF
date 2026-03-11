@@ -1,0 +1,99 @@
+name: Key Recording Submission
+description: Contribute captured keyfob recordings for protocol analysis.
+labels: ["recording", "data"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to submit captured keyfob recordings (.sub files or raw data).
+        These recordings help with protocol reverse engineering, decoder validation, and cipher analysis.
+
+        **Tips for useful captures:**
+        - Record 10+ sequential presses per button without long gaps
+        - Note the exact button pressed for each capture
+        - If possible, capture from multiple buttons on the same fob
+        - Include the vehicle make, model, and year
+  - type: input
+    id: vehicle
+    attributes:
+      label: Vehicle / device
+      description: "Make, model, year, and any relevant trim info."
+      placeholder: "e.g. 2015 Fiat Panda 1.2 Pop"
+    validations:
+      required: true
+  - type: dropdown
+    id: protocol
+    attributes:
+      label: Protocol (if known)
+      description: "Which protocol was detected, or select Unknown if not yet identified."
+      options:
+        - Unknown / new protocol
+        - VAG GROUP
+        - Cayenne
+        - PSA GROUP
+        - Ford V0
+        - Fiat SpA
+        - Fiat Mystery
+        - Subaru
+        - Siemens (Mazda)
+        - Kia V0
+        - Kia V1
+        - Kia V2
+        - Kia V3/V4
+        - Kia V5
+        - Kia V6
+        - Suzuki
+        - Mitsubishi V0
+        - Keeloq
+        - Other (specify below)
+    validations:
+      required: true
+  - type: input
+    id: frequency
+    attributes:
+      label: Frequency & modulation used
+      description: "The frequency and modulation setting used during capture."
+      placeholder: "e.g. 433.92 MHz AM650"
+    validations:
+      required: true
+  - type: input
+    id: buttons
+    attributes:
+      label: Button / function
+      description: "Which buttons were recorded and what they do."
+      placeholder: "e.g. Lock (Btn A), Unlock (Btn B), Trunk (Btn C)"
+    validations:
+      required: true
+  - type: input
+    id: num-captures
+    attributes:
+      label: Number of captures
+      description: "How many presses were recorded per button?"
+      placeholder: "e.g. 10 sequential presses per button"
+    validations:
+      required: true
+  - type: dropdown
+    id: capture-method
+    attributes:
+      label: Capture method
+      description: "How were the signals captured?"
+      options:
+        - SubGhz Read RAW
+        - SubGhz decoded (saved .sub)
+        - External SDR (HackRF, RTL-SDR, etc.)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: capture-data
+    attributes:
+      label: Capture data
+      description: "Paste .sub file contents here, or attach files. For multiple files, use separate code blocks labeled by button."
+      render: Text
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: "Any observations — counter gaps, time between captures, battery changes, multiple fobs, etc."

@@ -1,0 +1,111 @@
+name: Protocol / Algorithm Submission
+description: Submit a new protocol decoder, encoder, or cipher implementation.
+labels: ["protocol", "contribution"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to submit a new protocol implementation or algorithm for inclusion in Flipper-ARF.
+        Include as much technical detail as possible — timing, frame structure, cipher type, and test captures.
+  - type: input
+    id: protocol-name
+    attributes:
+      label: Protocol name
+      description: "Name for the protocol (as it should appear in the firmware)."
+      placeholder: "e.g. Renault V2, Opel Corsa, Nissan V0"
+    validations:
+      required: true
+  - type: input
+    id: manufacturer
+    attributes:
+      label: Manufacturer / vehicle
+      description: "Which manufacturer or vehicles use this protocol?"
+      placeholder: "e.g. Renault Clio 2010-2018, Opel/Vauxhall Corsa D"
+    validations:
+      required: true
+  - type: input
+    id: frequency
+    attributes:
+      label: Frequency & modulation
+      description: "RF frequency and modulation type."
+      placeholder: "e.g. 433.92 MHz FM (FSK)"
+    validations:
+      required: true
+  - type: dropdown
+    id: encoding
+    attributes:
+      label: Encoding
+      description: "How are bits encoded in the RF signal?"
+      options:
+        - PWM (Pulse Width Modulation)
+        - Manchester
+        - Differential Manchester
+        - OOK raw
+        - Other (describe in frame structure)
+    validations:
+      required: true
+  - type: textarea
+    id: timing
+    attributes:
+      label: Timing parameters
+      description: "Provide timing values for the protocol."
+      placeholder: |
+        te_short: 400 us
+        te_long: 800 us
+        te_delta: 150 us
+        Preamble: 16 pairs of alternating short pulses
+        Sync: 1200 us HIGH
+        Gap: 10000 us between bursts
+    validations:
+      required: true
+  - type: textarea
+    id: frame-structure
+    attributes:
+      label: Frame structure
+      description: "Describe the bit layout — field positions, sizes, fixed vs rolling parts."
+      placeholder: |
+        Total bits: 68
+        Bits 0-31: Encrypted (KeeLoq)
+        Bits 32-59: Serial (28 bits)
+        Bits 60-63: Button code (4 bits)
+        Bits 64-67: CRC (4 bits, XOR of nibbles)
+    validations:
+      required: true
+  - type: dropdown
+    id: cipher
+    attributes:
+      label: Cipher / rolling code type
+      description: "What cipher or rolling code scheme does this protocol use?"
+      options:
+        - None (static code)
+        - KeeLoq
+        - AES
+        - TEA / XTEA
+        - Hitag2
+        - Custom / proprietary
+        - Unknown (needs analysis)
+    validations:
+      required: true
+  - type: dropdown
+    id: status
+    attributes:
+      label: Implementation status
+      description: "How far along is the implementation?"
+      options:
+        - Concept only (analysis / documentation)
+        - Decoder working
+        - Encoder working
+        - Both decoder and encoder working
+    validations:
+      required: true
+  - type: textarea
+    id: captures
+    attributes:
+      label: Test captures
+      description: "Paste .sub file contents or raw pulse data for validation. Attach files if too large."
+      render: Text
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: "Links to datasheets, research papers, FCC filings, or related projects."
