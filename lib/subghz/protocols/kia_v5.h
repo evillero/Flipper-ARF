@@ -1,36 +1,36 @@
 #pragma once
 
-#include "kia_generic.h"
-#include <lib/toolbox/manchester_decoder.h>
+#include "base.h"
+#include "../blocks/math.h"
 
-
-#define KIA_PROTOCOL_V5_NAME "Kia V5"
+#define SUBGHZ_PROTOCOL_KIA_V5_NAME "KIA/HYU V5"
 
 typedef struct SubGhzProtocolDecoderKiaV5 SubGhzProtocolDecoderKiaV5;
 typedef struct SubGhzProtocolEncoderKiaV5 SubGhzProtocolEncoderKiaV5;
 
-extern const SubGhzProtocolDecoder kia_protocol_v5_decoder;
-extern const SubGhzProtocolEncoder kia_protocol_v5_encoder;
 extern const SubGhzProtocol subghz_protocol_kia_v5;
 
-// Decoder functions
-void* kia_protocol_decoder_v5_alloc(SubGhzEnvironment* environment);
-void kia_protocol_decoder_v5_free(void* context);
-void kia_protocol_decoder_v5_reset(void* context);
-void kia_protocol_decoder_v5_feed(void* context, bool level, uint32_t duration);
-uint8_t kia_protocol_decoder_v5_get_hash_data(void* context);
-SubGhzProtocolStatus kia_protocol_decoder_v5_serialize(
+void* subghz_protocol_decoder_kia_v5_alloc(SubGhzEnvironment* environment);
+void subghz_protocol_decoder_kia_v5_free(void* context);
+void subghz_protocol_decoder_kia_v5_reset(void* context);
+void subghz_protocol_decoder_kia_v5_feed(void* context, bool level, uint32_t duration);
+uint8_t subghz_protocol_decoder_kia_v5_get_hash_data(void* context);
+SubGhzProtocolStatus subghz_protocol_decoder_kia_v5_serialize(
     void* context,
     FlipperFormat* flipper_format,
     SubGhzRadioPreset* preset);
 SubGhzProtocolStatus
-    kia_protocol_decoder_v5_deserialize(void* context, FlipperFormat* flipper_format);
-void kia_protocol_decoder_v5_get_string(void* context, FuriString* output);
+    subghz_protocol_decoder_kia_v5_deserialize(void* context, FlipperFormat* flipper_format);
+void subghz_protocol_decoder_kia_v5_get_string(void* context, FuriString* output);
 
-// Encoder functions
-void* kia_protocol_encoder_v5_alloc(SubGhzEnvironment* environment);
-void kia_protocol_encoder_v5_free(void* context);
+void* subghz_protocol_encoder_kia_v5_alloc(SubGhzEnvironment* environment);
+void subghz_protocol_encoder_kia_v5_free(void* context);
 SubGhzProtocolStatus
-    kia_protocol_encoder_v5_deserialize(void* context, FlipperFormat* flipper_format);
-void kia_protocol_encoder_v5_stop(void* context);
-LevelDuration kia_protocol_encoder_v5_yield(void* context);
+    subghz_protocol_encoder_kia_v5_deserialize(void* context, FlipperFormat* flipper_format);
+void subghz_protocol_encoder_kia_v5_stop(void* context);
+LevelDuration subghz_protocol_encoder_kia_v5_yield(void* context);
+void subghz_protocol_encoder_kia_v5_set_button(void* context, uint8_t button);
+void subghz_protocol_encoder_kia_v5_set_counter(void* context, uint16_t counter);
+void subghz_protocol_encoder_kia_v5_increment_counter(void* context);
+uint16_t subghz_protocol_encoder_kia_v5_get_counter(void* context);
+uint8_t subghz_protocol_encoder_kia_v5_get_button(void* context);
