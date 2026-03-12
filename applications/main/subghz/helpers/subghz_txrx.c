@@ -1,5 +1,6 @@
 #include "subghz_txrx_i.h" // IWYU pragma: keep
 
+#include <math.h>
 #include <lib/subghz/protocols/protocol_items.h>
 #include <applications/drivers/subghz/cc1101_ext/cc1101_ext_interconnect.h>
 #include <lib/subghz/devices/cc1101_int/cc1101_int_interconnect.h>
@@ -494,28 +495,39 @@ void subghz_txrx_hopper_pause(SubGhzTxRx* instance) {
     }
 }
 
-#define SUBGHZ_MOD_HOPPER_DWELL_TICKS 3
-
 bool subghz_txrx_mod_hopper_get_running(SubGhzTxRx* instance) {
     furi_assert(instance);
     return instance->mod_hopper_running;
 }
 
-void subghz_txrx_mod_hopper_set_running(SubGhzTxRx* instance, bool running) {
+void subghz_txrx_mod_hopper_set_running(
+    SubGhzTxRx* instance,
+    bool running,
+    uint8_t dwell_ticks,
+    float rssi_threshold) {
     furi_assert(instance);
     instance->mod_hopper_running = running;
-    if(running) instance->mod_hopper_timer = SUBGHZ_MOD_HOPPER_DWELL_TICKS;
+    instance->mod_hopper_dwell = dwell_ticks;
+    instance->mod_hopper_rssi_threshold = rssi_threshold;
+    if(running) instance->mod_hopper_timer = dwell_ticks;
 }
 
-void subghz_txrx_mod_hopper_update(SubGhzTxRx* instance) {
+void subghz_txrx_mod_hopper_update(SubGhzTxRx* instance, float current_rssi) {
     furi_assert(instance);
     if(!instance->mod_hopper_running) return;
+
+    // If RSSI gating is enabled and signal is present, pause hopping
+    if(!isnan(instance->mod_hopper_rssi_threshold) &&
+       current_rssi > instance->mod_hopper_rssi_threshold) {
+        instance->mod_hopper_timer = instance->mod_hopper_dwell;
+        return;
+    }
 
     if(instance->mod_hopper_timer > 0) {
         instance->mod_hopper_timer--;
         return;
     }
-    instance->mod_hopper_timer = SUBGHZ_MOD_HOPPER_DWELL_TICKS;
+    instance->mod_hopper_timer = instance->mod_hopper_dwell;
 
     size_t count = subghz_setting_get_preset_count(instance->setting);
     if(count == 0) return;

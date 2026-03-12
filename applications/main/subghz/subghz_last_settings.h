@@ -20,7 +20,8 @@ typedef struct {
     float frequency_analyzer_trigger;
     bool protocol_file_names;
     bool enable_hopping;
-    bool enable_mod_hopping;
+    float mod_hopping_threshold; // RSSI threshold for mod hopping, NAN = disabled
+    uint32_t mod_hopping_dwell;  // Dwell time in ticks (100ms units)
     uint32_t ignore_filter;
     uint32_t filter;
     float rssi;

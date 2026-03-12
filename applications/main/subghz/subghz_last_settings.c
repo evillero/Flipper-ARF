@@ -1,5 +1,6 @@
 #include "subghz_last_settings.h"
 #include "subghz_i.h"
+#include <math.h>
 
 #define TAG "SubGhzLastSettings"
 
@@ -13,7 +14,8 @@
 #define SUBGHZ_LAST_SETTING_FIELD_FREQUENCY_ANALYZER_TRIGGER        "FATrigger"
 #define SUBGHZ_LAST_SETTING_FIELD_PROTOCOL_FILE_NAMES               "ProtocolNames"
 #define SUBGHZ_LAST_SETTING_FIELD_HOPPING_ENABLE                    "Hopping"
-#define SUBGHZ_LAST_SETTING_FIELD_MOD_HOPPING                       "ModHopping"
+#define SUBGHZ_LAST_SETTING_FIELD_MOD_HOP_THRESHOLD                 "ModHopThreshold"
+#define SUBGHZ_LAST_SETTING_FIELD_MOD_HOP_DWELL                     "ModHopDwell"
 #define SUBGHZ_LAST_SETTING_FIELD_IGNORE_FILTER                     "IgnoreFilter"
 #define SUBGHZ_LAST_SETTING_FIELD_FILTER                            "Filter"
 #define SUBGHZ_LAST_SETTING_FIELD_RSSI_THRESHOLD                    "RSSI"
@@ -46,6 +48,8 @@ void subghz_last_settings_load(SubGhzLastSettings* instance, size_t preset_count
     instance->filter = SubGhzProtocolFlag_Decodable;
     instance->rssi = SUBGHZ_RAW_THRESHOLD_MIN;
     instance->hopping_threshold = -90.0f;
+    instance->mod_hopping_threshold = NAN; // disabled by default
+    instance->mod_hopping_dwell = 20;      // 2 seconds (20 × 100ms ticks)
     instance->leds_and_amp = true;
 
     Storage* storage = furi_record_open(RECORD_STORAGE);
@@ -99,10 +103,17 @@ void subghz_last_settings_load(SubGhzLastSettings* instance, size_t preset_count
                    1)) {
                 flipper_format_rewind(fff_data_file);
             }
-            if(!flipper_format_read_bool(
+            if(!flipper_format_read_float(
                    fff_data_file,
-                   SUBGHZ_LAST_SETTING_FIELD_MOD_HOPPING,
-                   &instance->enable_mod_hopping,
+                   SUBGHZ_LAST_SETTING_FIELD_MOD_HOP_THRESHOLD,
+                   &instance->mod_hopping_threshold,
+                   1)) {
+                flipper_format_rewind(fff_data_file);
+            }
+            if(!flipper_format_read_uint32(
+                   fff_data_file,
+                   SUBGHZ_LAST_SETTING_FIELD_MOD_HOP_DWELL,
+                   &instance->mod_hopping_dwell,
                    1)) {
                 flipper_format_rewind(fff_data_file);
             }
@@ -221,10 +232,17 @@ bool subghz_last_settings_save(SubGhzLastSettings* instance) {
                file, SUBGHZ_LAST_SETTING_FIELD_HOPPING_ENABLE, &instance->enable_hopping, 1)) {
             break;
         }
-        if(!flipper_format_write_bool(
+        if(!flipper_format_write_float(
                file,
-               SUBGHZ_LAST_SETTING_FIELD_MOD_HOPPING,
-               &instance->enable_mod_hopping,
+               SUBGHZ_LAST_SETTING_FIELD_MOD_HOP_THRESHOLD,
+               &instance->mod_hopping_threshold,
+               1)) {
+            break;
+        }
+        if(!flipper_format_write_uint32(
+               file,
+               SUBGHZ_LAST_SETTING_FIELD_MOD_HOP_DWELL,
+               &instance->mod_hopping_dwell,
                1)) {
             break;
         }

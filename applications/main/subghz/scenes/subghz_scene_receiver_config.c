@@ -1,5 +1,6 @@
 #include "../subghz_i.h"
 #include <lib/toolbox/value_index.h>
+#include <math.h>
 
 #define TAG "SubGhzSceneReceiverConfig"
 
@@ -79,6 +80,44 @@ const float hopping_mode_value[HOPPING_MODE_COUNT] = {
     -50.0f,
     -45.0f,
     -40.0f,
+};
+
+#define MOD_HOP_DBM_COUNT 8
+const char* const mod_hop_dbm_text[MOD_HOP_DBM_COUNT] = {
+    "OFF",
+    "-90",
+    "-85",
+    "-80",
+    "-75",
+    "-70",
+    "-65",
+    "-60",
+};
+const float mod_hop_dbm_value[MOD_HOP_DBM_COUNT] = {
+    NAN,
+    -90.0f,
+    -85.0f,
+    -80.0f,
+    -75.0f,
+    -70.0f,
+    -65.0f,
+    -60.0f,
+};
+
+#define MOD_HOP_TIME_COUNT 5
+const char* const mod_hop_time_text[MOD_HOP_TIME_COUNT] = {
+    "0.5s",
+    "1s",
+    "2s",
+    "5s",
+    "10s",
+};
+const uint32_t mod_hop_time_ticks[MOD_HOP_TIME_COUNT] = {
+    5,
+    10,
+    20,
+    50,
+    100,
 };
 
 #define COMBO_BOX_COUNT 2
@@ -276,13 +315,31 @@ static void subghz_scene_receiver_config_set_hopping(VariableItem* item) {
         subghz->txrx, index != 0 ? SubGhzHopperStateRunning : SubGhzHopperStateOFF);
 }
 
-static void subghz_scene_receiver_config_set_mod_hopping(VariableItem* item) {
+static void subghz_scene_receiver_config_set_mod_hop_dbm(VariableItem* item) {
     SubGhz* subghz = variable_item_get_context(item);
     uint8_t index = variable_item_get_current_value_index(item);
-    variable_item_set_current_value_text(item, combobox_text[index]);
-    bool enabled = index == 1;
-    subghz->last_settings->enable_mod_hopping = enabled;
-    subghz_txrx_mod_hopper_set_running(subghz->txrx, enabled);
+    variable_item_set_current_value_text(item, mod_hop_dbm_text[index]);
+    subghz->last_settings->mod_hopping_threshold = mod_hop_dbm_value[index];
+    bool enabled = index != 0;
+    subghz_txrx_mod_hopper_set_running(
+        subghz->txrx,
+        enabled,
+        (uint8_t)subghz->last_settings->mod_hopping_dwell,
+        mod_hop_dbm_value[index]);
+}
+
+static void subghz_scene_receiver_config_set_mod_hop_time(VariableItem* item) {
+    SubGhz* subghz = variable_item_get_context(item);
+    uint8_t index = variable_item_get_current_value_index(item);
+    variable_item_set_current_value_text(item, mod_hop_time_text[index]);
+    subghz->last_settings->mod_hopping_dwell = mod_hop_time_ticks[index];
+    if(subghz_txrx_mod_hopper_get_running(subghz->txrx)) {
+        subghz_txrx_mod_hopper_set_running(
+            subghz->txrx,
+            true,
+            (uint8_t)mod_hop_time_ticks[index],
+            subghz->last_settings->mod_hopping_threshold);
+    }
 }
 
 static void subghz_scene_receiver_config_set_speaker(VariableItem* item) {
@@ -385,8 +442,9 @@ static void subghz_scene_receiver_config_var_list_enter_callback(void* context, 
 
         subghz_txrx_hopper_set_state(subghz->txrx, hopping_value[default_index]);
         subghz->last_settings->enable_hopping = hopping_value[default_index];
-        subghz->last_settings->enable_mod_hopping = false;
-        subghz_txrx_mod_hopper_set_running(subghz->txrx, false);
+        subghz->last_settings->mod_hopping_threshold = NAN;
+        subghz->last_settings->mod_hopping_dwell = 20;
+        subghz_txrx_mod_hopper_set_running(subghz->txrx, false, 20, NAN);
 
         variable_item_list_set_selected_item(subghz->variable_item_list, default_index);
         variable_item_list_reset(subghz->variable_item_list);
@@ -451,16 +509,47 @@ void subghz_scene_receiver_config_on_enter(void* context) {
         variable_item_set_current_value_index(item, value_index);
         variable_item_set_current_value_text(item, hopping_mode_text[value_index]);
 
-        // Mod Hopping
-        item = variable_item_list_add(
-            subghz->variable_item_list,
-            "Mod Hopping",
-            COMBO_BOX_COUNT,
-            subghz_scene_receiver_config_set_mod_hopping,
-            subghz);
-        value_index = subghz->last_settings->enable_mod_hopping ? 1 : 0;
-        variable_item_set_current_value_index(item, value_index);
-        variable_item_set_current_value_text(item, combobox_text[value_index]);
+        // Mod Hop dBm
+        {
+            uint8_t mod_dbm_idx = 0; // OFF
+            float thresh = subghz->last_settings->mod_hopping_threshold;
+            if(!isnan(thresh)) {
+                for(uint8_t k = 1; k < MOD_HOP_DBM_COUNT; k++) {
+                    if(mod_hop_dbm_value[k] == thresh) {
+                        mod_dbm_idx = k;
+                        break;
+                    }
+                }
+                if(mod_dbm_idx == 0) mod_dbm_idx = 1; // fallback to -90
+            }
+            item = variable_item_list_add(
+                subghz->variable_item_list,
+                "Mod Hop dBm",
+                MOD_HOP_DBM_COUNT,
+                subghz_scene_receiver_config_set_mod_hop_dbm,
+                subghz);
+            variable_item_set_current_value_index(item, mod_dbm_idx);
+            variable_item_set_current_value_text(item, mod_hop_dbm_text[mod_dbm_idx]);
+        }
+
+        // Mod Hop Time
+        {
+            uint8_t mod_time_idx = 2; // default 2s
+            for(uint8_t k = 0; k < MOD_HOP_TIME_COUNT; k++) {
+                if(mod_hop_time_ticks[k] == subghz->last_settings->mod_hopping_dwell) {
+                    mod_time_idx = k;
+                    break;
+                }
+            }
+            item = variable_item_list_add(
+                subghz->variable_item_list,
+                "Mod Hop Time",
+                MOD_HOP_TIME_COUNT,
+                subghz_scene_receiver_config_set_mod_hop_time,
+                subghz);
+            variable_item_set_current_value_index(item, mod_time_idx);
+            variable_item_set_current_value_text(item, mod_hop_time_text[mod_time_idx]);
+        }
     }
 
     if(scene_manager_get_scene_state(subghz->scene_manager, SubGhzSceneReadRAW) !=

@@ -166,19 +166,27 @@ void subghz_txrx_hopper_pause(SubGhzTxRx* instance);
 
 /**
  * Update modulation (preset) CC1101 in automatic mode (mod hopper)
- * Cycles through available presets at a fixed dwell time.
+ * Cycles through available presets at the configured dwell time.
+ * Pauses hopping when current_rssi exceeds the configured threshold.
  *
- * @param instance Pointer to a SubGhzTxRx
+ * @param instance     Pointer to a SubGhzTxRx
+ * @param current_rssi Current RSSI reading from the radio
  */
-void subghz_txrx_mod_hopper_update(SubGhzTxRx* instance);
+void subghz_txrx_mod_hopper_update(SubGhzTxRx* instance, float current_rssi);
 
 /**
- * Set mod hopper running state
+ * Set mod hopper running state with configuration
  *
- * @param instance Pointer to a SubGhzTxRx
- * @param running  true to enable, false to disable
+ * @param instance        Pointer to a SubGhzTxRx
+ * @param running         true to enable, false to disable
+ * @param dwell_ticks     Ticks to dwell on each modulation (100ms per tick)
+ * @param rssi_threshold  RSSI threshold to pause hopping (NAN = no gating)
  */
-void subghz_txrx_mod_hopper_set_running(SubGhzTxRx* instance, bool running);
+void subghz_txrx_mod_hopper_set_running(
+    SubGhzTxRx* instance,
+    bool running,
+    uint8_t dwell_ticks,
+    float rssi_threshold);
 
 /**
  * Get mod hopper running state
