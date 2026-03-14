@@ -452,9 +452,10 @@ void rolljam_signal_cleanup(RawSignal* signal) {
             continue;
         }
 
-        int16_t quantized = (int16_t)(((abs_val + 50) / 100) * 100);
-        if(quantized < MIN_PULSE_US) quantized = MIN_PULSE_US;
-        if(quantized > 32767) quantized = 32767;
+        int32_t q = ((abs_val + 50) / 100) * 100;
+        if(q < MIN_PULSE_US) q = MIN_PULSE_US;
+        if(q > 32767) q = 32767;
+        int16_t quantized = (int16_t)q;
 
         if(out < RAW_SIGNAL_MAX_SIZE) {
             cleaned[out++] = is_positive ? quantized : -quantized;
