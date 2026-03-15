@@ -409,7 +409,7 @@ void subghz_protocol_decoder_fiat_marelli_feed(void* context, bool level, uint32
 
             FURI_LOG_I(
                 TAG,
-                "Type%s TE:%lu %db Sn:%08lX Btn:0x%X Ep:%X Ctr:%d Roll:%02X%02X%02X%02X%02X%02X",
+                "Type%s TE:%lu %db Sn:%08lX Btn:0x%X Ep:%X Ctr:%lu Roll:%02X%02X%02X%02X%02X%02X",
                 variant,
                 instance->te_detected ? instance->te_detected : te_short,
                 instance->bit_count,
