@@ -11,6 +11,8 @@
 #include "views/desktop_view_lock_menu.h"
 #include "views/desktop_view_debug.h"
 #include "views/desktop_view_slideshow.h"
+#include "views/desktop_view_tos.h"
+#include "helpers/arf_boot_jingle.h"
 
 #include <gui/gui.h>
 #include <gui/view_stack.h>
@@ -32,6 +34,7 @@ typedef enum {
     DesktopViewIdPinInput,
     DesktopViewIdPinTimeout,
     DesktopViewIdSlideshow,
+    DesktopViewIdTos,
     DesktopViewIdTotal,
 } DesktopViewId;
 
@@ -55,6 +58,7 @@ struct Desktop {
     DesktopMainView* main_view;
     DesktopViewPinTimeout* pin_timeout_view;
     DesktopSlideshowView* slideshow_view;
+    DesktopViewTos* tos_view;
     DesktopViewPinInput* pin_input_view;
 
     ViewStack* main_view_stack;

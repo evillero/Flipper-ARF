@@ -282,6 +282,7 @@ static Desktop* desktop_alloc(void) {
     desktop->pin_input_view = desktop_view_pin_input_alloc();
     desktop->pin_timeout_view = desktop_view_pin_timeout_alloc();
     desktop->slideshow_view = desktop_view_slideshow_alloc();
+    desktop->tos_view = desktop_view_tos_alloc();
 
     desktop->main_view_stack = view_stack_alloc();
     desktop->main_view = desktop_main_alloc();
@@ -326,6 +327,10 @@ static Desktop* desktop_alloc(void) {
         desktop->view_dispatcher,
         DesktopViewIdSlideshow,
         desktop_view_slideshow_get_view(desktop->slideshow_view));
+    view_dispatcher_add_view(
+        desktop->view_dispatcher,
+        DesktopViewIdTos,
+        desktop_view_tos_get_view(desktop->tos_view));
 
     // Lock icon
     desktop->lock_icon_viewport = view_port_alloc();
@@ -512,6 +517,8 @@ int32_t desktop_srv(void* p) {
     if(storage_file_exists(desktop->storage, SLIDESHOW_FS_PATH)) {
         scene_manager_next_scene(desktop->scene_manager, DesktopSceneSlideshow);
     }
+
+    scene_manager_next_scene(desktop->scene_manager, DesktopSceneTos);
 
     if(!furi_hal_version_do_i_belong_here()) {
         scene_manager_next_scene(desktop->scene_manager, DesktopSceneHwMismatch);
