@@ -155,6 +155,22 @@ bool subghz_view_transmitter_input(InputEvent* event, void* context) {
         true);
 
     if(can_be_sent) {
+        if(event->type == InputTypeLong) {
+            if(event->key == InputKeyUp) {
+                subghz_custom_btn_set(SUBGHZ_CUSTOM_BTN_UP);
+                subghz_custom_btn_set_long(true);
+        } else if(event->key == InputKeyDown) {
+            subghz_custom_btn_set(SUBGHZ_CUSTOM_BTN_DOWN);
+            subghz_custom_btn_set_long(true);
+        } else if(event->key == InputKeyLeft) {
+            subghz_custom_btn_set(SUBGHZ_CUSTOM_BTN_LEFT);
+            subghz_custom_btn_set_long(true);
+        } else if(event->key == InputKeyRight) {
+            subghz_custom_btn_set(SUBGHZ_CUSTOM_BTN_RIGHT);
+            subghz_custom_btn_set_long(true);
+        }
+    }
+
         if(event->key == InputKeyOk && event->type == InputTypePress) {
             subghz_custom_btn_set(SUBGHZ_CUSTOM_BTN_OK);
             with_view_model(

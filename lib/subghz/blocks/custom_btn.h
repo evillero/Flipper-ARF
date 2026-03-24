@@ -25,6 +25,9 @@ void subghz_custom_btns_reset(void);
 
 bool subghz_custom_btn_is_allowed(void);
 
+void subghz_custom_btn_set_long(bool v);
+bool subghz_custom_btn_get_long(void);
+
 #ifdef __cplusplus
 }
 #endif

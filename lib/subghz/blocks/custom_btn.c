@@ -5,6 +5,8 @@ static uint8_t custom_btn_original = 0;
 static uint8_t custom_btn_max_btns = 0;
 static uint8_t controller_programming_mode = PROG_MODE_OFF;
 
+static bool subghz_custom_btn_long = false;
+
 bool subghz_custom_btn_set(uint8_t btn_id) {
     if(btn_id > custom_btn_max_btns) {
         custom_btn_id = SUBGHZ_CUSTOM_BTN_OK;
@@ -36,6 +38,7 @@ void subghz_custom_btns_reset(void) {
     custom_btn_max_btns = 0;
     controller_programming_mode = PROG_MODE_OFF;
     custom_btn_id = SUBGHZ_CUSTOM_BTN_OK;
+    subghz_custom_btn_long = false;
 }
 
 bool subghz_custom_btn_is_allowed(void) {
@@ -48,4 +51,12 @@ void subghz_custom_btn_set_prog_mode(ProgMode prog_mode) {
 
 ProgMode subghz_custom_btn_get_prog_mode(void) {
     return controller_programming_mode;
+}
+
+void subghz_custom_btn_set_long(bool v) {
+    subghz_custom_btn_long = v;
+}
+
+bool subghz_custom_btn_get_long(void) {
+    return subghz_custom_btn_long;
 }
