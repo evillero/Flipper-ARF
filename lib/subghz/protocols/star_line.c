@@ -10,33 +10,51 @@ static const char* star_line_btn_name(uint8_t btn) {
     switch(btn) {
     case 0x01: return "Lock";
     case 0x02: return "Unlock";
-    case 0x04: return "Trunk";
-    case 0x08: return "Aux";
+    case 0x03: return "Trunk";
+    case 0x04: return "Aux/Panic";
+    case 0x21: return "Lock";
+    case 0x22: return "Unlock";
+    case 0x23: return "Trunk";
+    case 0x24: return "Start";
+    case 0x25: return "Stop";
+    case 0x26: return "Extra";
     default:   return "?";
     }
 }
 
 static uint8_t star_line_btn_to_custom(uint8_t btn) {
     switch(btn) {
-    case 0x01: return SUBGHZ_CUSTOM_BTN_UP;
-    case 0x02: return SUBGHZ_CUSTOM_BTN_DOWN;
-    case 0x04: return SUBGHZ_CUSTOM_BTN_LEFT;
-    case 0x08: return SUBGHZ_CUSTOM_BTN_RIGHT;
-    default:   return SUBGHZ_CUSTOM_BTN_OK;
+    case 0x01:
+    case 0x21: return 1;
+    case 0x02:
+    case 0x22: return 2;
+    case 0x03:
+    case 0x23: return 3;
+    case 0x04:
+    case 0x24: return 4;
+    case 0x25: return 5;
+    case 0x26: return 6;
+    default:   return 1;
     }
 }
 
 static uint8_t star_line_custom_to_btn(uint8_t custom, uint8_t original_btn) {
-    if(custom == SUBGHZ_CUSTOM_BTN_OK)    return original_btn;
-    if(custom == SUBGHZ_CUSTOM_BTN_UP)    return 0x01;
-    if(custom == SUBGHZ_CUSTOM_BTN_DOWN)  return 0x02;
-    if(custom == SUBGHZ_CUSTOM_BTN_LEFT)  return 0x04;
-    if(custom == SUBGHZ_CUSTOM_BTN_RIGHT) return 0x08;
-    return original_btn;
+    bool is_twage = (original_btn & 0x20) != 0;
+
+    switch(custom) {
+    case 1: return is_twage ? 0x21 : 0x01;
+    case 2: return is_twage ? 0x22 : 0x02;
+    case 3: return is_twage ? 0x23 : 0x03;
+    case 4: return is_twage ? 0x24 : 0x04;
+    case 5: return 0x25;
+    case 6: return 0x26;
+    default: return original_btn;
+    }
 }
 
 static uint8_t star_line_get_btn_code(uint8_t original_btn) {
     uint8_t custom = subghz_custom_btn_get();
+    if(custom == SUBGHZ_CUSTOM_BTN_OK) return original_btn;
     return star_line_custom_to_btn(custom, original_btn);
 }
 
@@ -976,13 +994,39 @@ void subghz_protocol_decoder_star_line_get_string(void* context, FuriString* out
     uint32_t code_found_reverse_hi = code_found_reverse >> 32;
     uint32_t code_found_reverse_lo = code_found_reverse & 0x00000000ffffffff;
 
+    uint8_t display_btn;
+    uint8_t custom = subghz_custom_btn_get();
+    if(custom == SUBGHZ_CUSTOM_BTN_OK) {
+        display_btn = instance->generic.btn;
+    } else {
+        display_btn = star_line_custom_to_btn(custom, instance->generic.btn);
+    }
+
+    //furi_string_cat_printf(
+    //    output,
+    //    "%s %dbit\r\n"
+    //    "Key:%08lX%08lX\r\n"
+    //    "Fix:0x%08lX    Cnt:%04lX\r\n"
+    //    "Hop:0x%08lX    Btn:[%s]\r\n",
+    //    "MF:%s\r\n",
+    //    instance->generic.protocol_name,
+    //    instance->generic.data_count_bit,
+    //    code_found_hi,
+    //    code_found_lo,
+    //    code_found_reverse_hi,
+    //    instance->generic.cnt,
+    //    code_found_reverse_lo,
+    //    star_line_btn_name(display_btn),
+    //    instance->manufacture_name);
+//}
+
+
     furi_string_cat_printf(
         output,
         "%s %dbit\r\n"
         "Key:%08lX%08lX\r\n"
         "Fix:0x%08lX    Cnt:%04lX\r\n"
-        "Hop:0x%08lX    Btn:[%s]\r\n"
-        "MF:%s\r\n",
+        "Hop:0x%08lX    Btn:[%s]\r\n",
         instance->generic.protocol_name,
         instance->generic.data_count_bit,
         code_found_hi,
@@ -990,6 +1034,6 @@ void subghz_protocol_decoder_star_line_get_string(void* context, FuriString* out
         code_found_reverse_hi,
         instance->generic.cnt,
         code_found_reverse_lo,
-        star_line_btn_name(star_line_get_btn_code(instance->generic.btn)),
-        instance->manufacture_name);
+        star_line_btn_name(display_btn)
+    );
 }

@@ -60,6 +60,8 @@ This project may incorporate, adapt, or build upon **other open-source projects*
 | Subaru | Subaru | 433 MHz | AM | Yes | Yes | No |
 | Suzuki | Suzuki | 433 MHz | FM | Yes | Yes | Yes |
 | Mitsubishi | Mitsubishi V0 | 868 MHz | FM | Yes | Yes | No |
+| Starline | Star Line | 433 MHz | AM | Yes | Yes | No |
+| Scher-Khan | Scher-Khan | 433 MHz | FM | Yes | Yes | No |
 
 ### Gate / Access Protocols
 
