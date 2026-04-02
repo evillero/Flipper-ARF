@@ -75,6 +75,7 @@ const SubGhzProtocol* const subghz_protocol_registry_items[] = {
     &subghz_protocol_star_line,
     &subghz_protocol_scher_khan,
     &subghz_protocol_sheriff_cfm,
+    &subghz_protocol_honda,
 };
 
 const SubGhzProtocolRegistry subghz_protocol_registry = {
