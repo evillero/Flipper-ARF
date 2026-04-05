@@ -333,6 +333,9 @@ LevelDuration subghz_protocol_encoder_chrysler_yield(void* context) {
             instance->encoder.repeat--;
         }
         instance->encoder.front = 0;
+        chrysler_advance_rolling(instance->raw_data);
+        chrysler_encoder_rebuild(instance);
+        chrysler_encoder_get_upload(instance);
     }
 
     return ret;
