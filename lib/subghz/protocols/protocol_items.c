@@ -44,7 +44,7 @@ const SubGhzProtocol* const subghz_protocol_registry_items[] = {
     //&subghz_protocol_honeywell,     
     //&subghz_protocol_legrand,
     &subghz_protocol_dickert_mahs,  
-    //&subghz_protocol_gangqi,
+    &subghz_protocol_gangqi,
     &subghz_protocol_marantec24,    
     //&subghz_protocol_hollarm,
     &subghz_protocol_hay21,         
@@ -76,7 +76,7 @@ const SubGhzProtocol* const subghz_protocol_registry_items[] = {
     &subghz_protocol_star_line,
     &subghz_protocol_scher_khan,
     &subghz_protocol_sheriff_cfm,
-    &subghz_protocol_honda,
+    // until fix &subghz_protocol_honda,
     &subghz_protocol_chrysler,
 };
 
