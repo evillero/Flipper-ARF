@@ -78,6 +78,7 @@ const SubGhzProtocol* const subghz_protocol_registry_items[] = {
     &subghz_protocol_sheriff_cfm,
     // until fix &subghz_protocol_honda,
     &subghz_protocol_chrysler,
+    &subghz_protocol_psa2,
 };
 
 const SubGhzProtocolRegistry subghz_protocol_registry = {
