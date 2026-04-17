@@ -1069,6 +1069,8 @@ void subghz_protocol_decoder_psa_feed(void* context, bool level, uint32_t durati
                                  &instance->manchester_state,
                                  &decoded_bit)) {
                 uint32_t carry = (instance->decode_data_low >> 31) & 1;
+                // PSA AM uses inverted Manchester convention
+                decoded_bit = !decoded_bit;
                 instance->decode_data_low = (instance->decode_data_low << 1) | (decoded_bit ? 1 : 0);
                 instance->decode_data_high = (instance->decode_data_high << 1) | carry;
                 instance->decode_count_bit++;
