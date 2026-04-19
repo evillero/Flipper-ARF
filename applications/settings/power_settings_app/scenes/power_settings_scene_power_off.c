@@ -24,7 +24,7 @@ void power_settings_scene_power_off_on_enter(void* context) {
         settings.happy_mode ? AlignCenter : AlignTop);
     if(!settings.happy_mode) {
         dialog_ex_set_text(
-            dialog, "   I will be\nwaiting for\n you here...", 78, 14, AlignLeft, AlignTop);
+            dialog, "ARF idle.\nYour research awaits.", 64, 30, AlignCenter, AlignCenter );
         // [NO_DOLPHIN] dialog_ex_set_icon(dialog, 24, 10, &I_dolph_cry_49x54);
     }
     dialog_ex_set_left_button_text(dialog, "Settings");
