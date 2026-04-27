@@ -59,6 +59,7 @@ const SubGhzProtocol* const subghz_protocol_registry_items[] = {
     &subghz_protocol_vag,          
     &subghz_protocol_porsche_cayenne,  
     &subghz_protocol_ford_v0,
+    &ford_protocol_v1,
     &subghz_protocol_psa,
     &subghz_protocol_fiat_spa,       
     &subghz_protocol_fiat_marelli,
@@ -71,13 +72,15 @@ const SubGhzProtocol* const subghz_protocol_registry_items[] = {
     &subghz_protocol_kia_v3_v4,
     &subghz_protocol_kia_v5,       
     &subghz_protocol_kia_v6,
+    &subghz_protocol_kia_v7,
     &subghz_protocol_suzuki, 
     &subghz_protocol_mitsubishi_v0,
     &subghz_protocol_star_line,
     &subghz_protocol_scher_khan,
     &subghz_protocol_sheriff_cfm,
-    // until fix &subghz_protocol_honda,
     &subghz_protocol_chrysler,
+    &honda_static_protocol,
+    //&subghz_protocol_honda,
 };
 
 const SubGhzProtocolRegistry subghz_protocol_registry = {
