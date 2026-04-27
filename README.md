@@ -352,7 +352,7 @@ IN NO EVENT SHALL THE AUTHORS, COPYRIGHT HOLDERS, OR CONTRIBUTORS BE LIABLE FOR 
 
 ---
 
-# Special thanks to everyone who contributes to this project (in alphabetical order):
+### Special thanks to everyone who contributes to this project (in alphabetical order):
 
 - 47LeCoste
 - D4c1
