@@ -48,6 +48,7 @@ This project may incorporate, adapt, or build upon **other open-source projects*
 | Porsche | Porsche AG | 433/868 MHz | AM | Yes | Yes | No |
 | PSA (Peugeot/Citroën/DS) | PSA GROUP | 433 MHz | AM/FM | Yes | Yes | Yes |
 | Ford | Ford V0 | 315/433 MHz | AM | Yes | Yes | Yes |
+| Ford | Ford V1 | 315/433 MHz | FM | Yes | Yes | Yes |
 | Fiat | Fiat SpA | 433 MHz | AM | Yes | Yes | Yes |
 | Fiat | Marelli/Delphi | 433 MHz | AM | No | Yes | Yes |
 | Renault (old models) | Marelli | 433 MHz | AM | No | Yes | No|
@@ -58,6 +59,7 @@ This project may incorporate, adapt, or build upon **other open-source projects*
 | Kia/Hyundai | KIA/HYU V3/V4 | 315/433 MHz | AM/FM | Yes | Yes | Yes |
 | Kia/Hyundai | KIA/HYU V5 | 433 MHz | FM | Yes | Yes | Yes |
 | Kia/Hyundai | KIA/HYU V6 | 433 MHz | FM | Yes | Yes | Yes |
+| Kia/Hyundai | KIA V7 | 433 MHz | FM | Yes | Yes | Yes |
 | Subaru | Subaru | 433 MHz | AM | Yes | Yes | No |
 | Suzuki | Suzuki | 433 MHz | FM | Yes | Yes | Yes |
 | Mitsubishi | Mitsubishi V0 | 868 MHz | FM | Yes | Yes | No |
@@ -67,6 +69,7 @@ This project may incorporate, adapt, or build upon **other open-source projects*
 | Scher-Khan | Magic Code PRO1/PRO2 | 433 MHz | FM | Yes | Yes | Yes |
 | Sheriff | Sheriff CFM (ZX-750/930) | 433 MHz | AM | Yes | Yes | No |
 | Chrysler/Dodge/Jeep | FOBIK GQ43VT | 315/433 MHz | AM | Yes | Yes | No |
+| Honda | Honda Static | 433 MHz | AM | Yes | Yes | No |
 
 ### Gate / Access Protocols
 
@@ -345,3 +348,18 @@ THIS SOFTWARE IS PROVIDED **"AS IS,"** WITHOUT ANY WARRANTIES OF ANY KIND, EXPRE
 IN NO EVENT SHALL THE AUTHORS, COPYRIGHT HOLDERS, OR CONTRIBUTORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR ITS USE.  
 
 **ALL RISKS FROM THE USE OR PERFORMANCE OF THIS SOFTWARE REMAIN WITH THE USER.**
+
+
+---
+
+### Special thanks to everyone who contributes to this project (in alphabetical order):
+
+- 47LeCoste
+- D4c1
+- D4rks1d3
+- LTX74
+- Leeroy
+- lupettohf
+- MMX
+- RalphWiggum
+- zero-mega
