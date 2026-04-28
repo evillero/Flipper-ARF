@@ -1,5 +1,5 @@
 entry,status,name,type,params
-Version,+,89.1,,
+Version,+,89.2,,
 Header,+,applications/drivers/subghz/cc1101_ext/cc1101_ext_interconnect.h,,
 Header,+,applications/services/applications.h,,
 Header,+,applications/services/bt/bt_service/bt.h,,
@@ -3462,8 +3462,8 @@ Function,+,subghz_block_generic_global_reset,void,void*
 Function,+,subghz_block_generic_serialize,SubGhzProtocolStatus,"SubGhzBlockGeneric*, FlipperFormat*, SubGhzRadioPreset*"
 Function,+,subghz_custom_btn_get,uint8_t,
 Function,-,subghz_custom_btn_get_long,_Bool,
-Function,+,subghz_custom_btn_get_original,uint8_t,
 Function,+,subghz_custom_btn_get_max_pages,uint8_t,
+Function,+,subghz_custom_btn_get_original,uint8_t,
 Function,+,subghz_custom_btn_get_page,uint8_t,
 Function,+,subghz_custom_btn_has_pages,_Bool,
 Function,+,subghz_custom_btn_is_allowed,_Bool,
@@ -3706,6 +3706,7 @@ Function,+,text_input_set_header_text,void,"TextInput*, const char*"
 Function,+,text_input_set_minimum_length,void,"TextInput*, size_t"
 Function,+,text_input_set_result_callback,void,"TextInput*, TextInputCallback, void*, char*, size_t, _Bool"
 Function,+,text_input_set_validator,void,"TextInput*, TextInputValidatorCallback, void*"
+Function,+,text_input_show_illegal_symbols,void,"TextInput*, _Bool"
 Function,-,tga_save,void,const char*
 Function,-,tgamma,double,double
 Function,-,tgammaf,float,float
