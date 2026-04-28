@@ -77,6 +77,13 @@ void text_input_set_validator(
     TextInputValidatorCallback callback,
     void* callback_context);
 
+/**
+ * @brief Show the 9 illegal (windows) symbols <>:"/\|?* in the symbols keyboard instead of the numbers
+ * @param [in] text_input TextInput
+ * @param [in] show Whether to show the illegal symbols or not
+ */
+void text_input_show_illegal_symbols(TextInput* text_input, bool show);
+
 TextInputValidatorCallback text_input_get_validator_callback(TextInput* text_input);
 
 void* text_input_get_validator_callback_context(TextInput* text_input);
