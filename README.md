@@ -352,9 +352,18 @@ IN NO EVENT SHALL THE AUTHORS, COPYRIGHT HOLDERS, OR CONTRIBUTORS BE LIABLE FOR 
 
 ---
 
-### Special thanks to everyone who contributes to this project (in alphabetical order):
+## Special thanks to everyone who contributes to this project:
+
+## Contributors (GitHub)
+
+<a href="https://github.com/d4c1-labs/Flipper-ARF/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=d4c1-labs/Flipper-ARF"/>
+</a>
+
+## Special Thanks
 
 - 47LeCoste
+- Ash
 - D4c1
 - D4rks1d3
 - LTX74
